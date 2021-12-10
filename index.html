@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset='utf-8'>
+    <title>Vape It</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='mihojadeestilos.css'>
+    <link href="https://fonts.googleapis.com/css2?family=Blinker&family=Raleway&family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css' rel='stylesheet'/>
+    <script src="speaker.js"></script>
+    <script src="inicio.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+      img{
+        cursor: all-scroll;
+        transition:transform 1s ease 0.1s;
+      }
+      #vendemos > div > section > img:hover{
+        transform: scale(1.5);
+        transition: 1s;
+      }
+      #vendemos > div > figure > img:hover{
+        transform: scale(1.5);
+        transition: 1s;
+      }
+      #divInvisible{
+        height: 50px;
+        position: relative;
+        margin-top: 50px;
+        visibility: hidden;
+      }
+      #animlogo
+
+      {
+
+          position: relative;
+      
+          cursor: pointer;
+      
+      }
+    </style>
+    <script>
+      function loadLocation() {
+        navigator.geolocation.getCurrentPosition(viewMap,ViewError,{timeout:1000});
+      }
+      function viewMap (position) {
+        var lon = position.coords.longitude;
+        var lati = position.coords.latitude;
+        let lon2 = -68.074518;
+        let lat2 = -16.534656;
+        let distancia = getDistanceBetweenPoints(lati,lon,lat2,lon2);
+        const marcador2 = new mapboxgl.Marker()
+        .setLngLat([lon,lati])
+        .addTo(map);
+        document.getElementById("long").innerHTML = "Posición actual - Longitud: "+lon;
+        document.getElementById("latitud").innerHTML = "Posición actual - Latitud: "+lati;
+        document.getElementById("distancia").innerHTML = "Distancia entre tu posición actual y Vape It: "+Math.round(distancia)+" m";
+      }
+      function ViewError (error) {
+        alert(error.code);
+      }
+      function getDistanceBetweenPoints(lat1, lng1, lat2, lng2){
+        let R = 6378137;
+        let dLat = degreesToRadians(lat2 - lat1);
+        let dLong = degreesToRadians(lng2 - lng1);
+        let a = Math.sin(dLat / 2)
+                *
+                Math.sin(dLat / 2) 
+                +
+                Math.cos(degreesToRadians(lat1)) 
+                * 
+                Math.cos(degreesToRadians(lat1)) 
+                *
+                Math.sin(dLong / 2) 
+                * 
+                Math.sin(dLong / 2);
+
+        let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        let distance = R * c;
+
+        return distance;
+        }
+        function degreesToRadians(degrees){
+          return degrees * Math.PI / 180;
+        }
+      </script>
+</head>
+<body id="body" onload="loadLocation();">
+  <a name="inicio"></a>
+    <div id="nav" class="d-flex flex-row justify-content-evenly" style="background: #1b1a1a;font-size: 24px;">
+      <div>
+        <nav class="container-fluid nav p-4 justify-content-start">
+        <a href="index.html" class="nav-link" style="font-weight: bold; color:#a001a0">Inicio</a>
+        <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" style="font-weight: bold; color: #a001a0;">Productos</a>
+        <ul class="dropdown-menu">
+          <li><a href="eliquids.html" class="dropdown-item" style="color:#a001a0">E-Liquids</a></li>
+          <li><a href="equipos.html" class="dropdown-item" style="color:#a001a0">Equipos</a></li>
+          <li><a href="atomizadores.html" class="dropdown-item" style="color:#a001a0">Atomizadores</a></li>
+          <li><a href="accesorios.html" class="dropdown-item" style="color:#a001a0">Accesorios</a></li>
+        </ul>
+      </li>
+        <a href="informacion.html" class="nav-link" style="font-weight: bold;color: #a001a0;">Información</a>
+        <a href="estadisticas.html" class="nav-link" style="font-weight: bold;color: #a001a0;">Estadísticas</a>
+        <a href="galeria.html" class="nav-link" style="font-weight: bold;color: #a001a0;">Galería</a>
+        <a href="http://localhost:3000/index.html" class="nav-link" style="font-weight: bold;color: #a001a0;">Sugerencias</a>
+      </nav>
+      </div>
+      <div style="margin-top: 15px;margin-bottom: 15px;">
+        <script src="https://code.responsivevoice.org/responsivevoice.js?key=zJs5qYFU"></script>
+        <span id="hablartit" style="font-size: 48px;font-weight: bold; color:#a001a0;text-shadow: #000000 3px 3px 5px; cursor: pointer;" class="animate__animated animate__slideInLeft">Vape it</span>
+        <script>
+          /*speaker*/
+        var Copia = document.querySelector('#hablartit'); 
+        Copia.addEventListener('mouseup', ()=>{ let seleccionado = "Bienvenido a Vape It";
+        speechSynthesis.speak(new SpeechSynthesisUtterance(seleccionado)); })
+        </script>
+        &nbsp;<img id="animlogo" width="75" height="75" src="imagenes/logovapeti.png" class="imglogo">
+
+        <!--animate logo-->
+
+          <script>
+            animlogo.onclick = function() {
+              let start = Date.now();
+              let timer = setInterval(function() {
+                let timePassed = Date.now() - start;
+                animlogo.style.left = timePassed / 5 + 'px';
+                if (timePassed > 2000) clearInterval(timer);
+              }, 20);
+            }
+          </script>
+      </div>
+      <div id="iconsenlace">
+        <a href="carrito.html"><ion-icon name="cart-outline" style="color: #a001a0;"></ion-icon></a>&nbsp;<a href="registro.html"><ion-icon name="person-add-outline" style="color: #a001a0;"></ion-icon></a>&nbsp;<a href="iniciosesion.html"><ion-icon name="person-outline" style="color: #a001a0;"></ion-icon></a>
+      </div>
+      <button id="btninfo"><a href="index.html"><center><ion-icon name="home-outline" style="color:#a001a0;"></ion-icon></center></a></button>
+    </div>
+    <div class="container-fluid" id="divquienessomos">
+      <header style="font-size: 40px;"><center><b><u>¿Quienes somos?</u></b></center></header>
+      <div class="d-flex flex-row justify-content-evenly">
+        <div>
+          <img src="imagenes/imgcigar.jpg" width="300" height="400">
+        </div>
+        <div>
+          <p align="justify" style="width: 500px; font-size: 24px;">
+            Vape It es una tienda especializada en cigarrillos electronicos, buscando destacar por la calidad en los productos y la calidez en la atencion al cliente, logrando asi ser la tienda mas reconocida en el ambito en la ciudad de La Paz.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid" id="vendemos" style="width: 1500px;">
+      <header style="font-size: 40px;"><center><b><u>Vendemos</u></b></center></header>
+      <div class="d-flex flex-row justify-content-evenly">
+        <section>
+          <header style="font-size: 32px;"><center><b><mark>E-Liquids</mark></b></center></header>
+          <img src="imagenes/eliquid.jpg" width="250" height="250">
+        </section>
+        <section>
+          <header style="font-size: 32px;"><center><b><mark>Equipos</mark></b></center></header>
+          <img src="imagenes/equipo.jpg" width="250" height="250">
+        </section>
+        <figure>
+          <figcaption style="font-size: 32px;"><center><b><mark>Atomizadores</mark></b></center></figcaption>
+          <img src="imagenes/atomizador.jpg" width="250" height="250">
+        </figure>
+        <figure>
+          <figcaption style="font-size: 32px;"><center><b><mark>Accesorios</mark></b></center></figcaption>
+          <img src="imagenes/accesorios.jpg" width="250" height="250">
+        </figure>
+      </div>
+    </div>
+    <div class="container-fluid" id="ubicacionVapeit">
+      <header style="font-size: 40px;"><center><b><u><em>¿Donde encontrarnos?</em></u></b></center></header>    
+      <div id='map' class="container-fluid" style='width: 1600px; height: 700px;'></div>
+      <script>
+      mapboxgl.accessToken = 'pk.eyJ1IjoibGVvZ21yMjAiLCJhIjoiY2t3dWJ6NGFrMW1wbzJxbzBldmR2ejQ4NiJ9.PJ31pEyju7fAvvelO8vfgQ';
+      const map = new mapboxgl.Map({
+          container: 'map',
+          style: 'mapbox://styles/mapbox/streets-v11',
+          center: [-68.074518,-16.534656],
+          zoom: 14
+      });
+      map.addControl(
+      new mapboxgl.GeolocateControl({
+      positionOptions: {
+      enableHighAccuracy: true
+      },
+      trackUserLocation: true,
+      showUserHeading: true
+      })/*,*/
+      /*new MapboxDirections ({
+		accessToken: mapboxgl.accessToken,
+		unit: 'metric',
+		language: 'es',
+		alternatives: true,
+		congestion: true,
+		geocoder: new MapboxGeocoder({
+			accessToken: mapboxgl.accessToken,
+			countries: 'py',
+			mapboxgl: mapboxgl
+		}),
+		placeholderOrigin: 'Escriba una ciudad de origen',
+		placeholderDestination: 'Escriba una ciudad de destino'
+	}),
+	'top-left'*/
+      );
+      
+      const marcador = new mapboxgl.Marker()
+      .setLngLat([-68.074518,-16.534656])
+      .addTo(map);
+      </script>
+      <script>
+        let lati = 18.125115;
+        let lon = 41.151544;
+        
+        
+        
+      </script>
+      <label id="long" class="labelcoor"></label><br/>
+      <label id="latitud" class="labelcoor"></label><br/>
+      <label id="distancia" class="labelcoor"></label><br/>
+    <div id="divInvisible">dsadas</div>
+    </div>
+    <img id="image" onmousemove="changeimage();" width="700" height="300" style="cursor:no-drop;">
+    <center><a href="#inicio" id="btninicio">Volver al inicio de la página</a></center><br>
+    <footer>
+      <div class="p-3 container-fluid d-flex justify-content-evenly" style="color: #a001a0;">
+        <div>
+          <p style="font-weight: bold; font-size: 18px;"><a href="desarrolladores.html" id="desabtn" style=" font-size: 24px;">Información</a><br><br>
+            <ul style="list-style: none; right: 30px; position: relative;font-size: 18px;">
+              <li style="color: #a001a0;font-weight: bold;"><address>Sucursal 1: Achumani Calle 11 #5</address></li>
+              <li style="font-weight: bold;">Horarios de atención: Lun-vie: 10am-9pm, Sábado: 12am-6pm</li>
+              <li style="color: #a001a0;font-weight: bold;">Teléfono: +591 76533222</li>
+            </ul>
+          </p>
+        </div>
+        <div>
+          <p style="font-weight: bold; font-size: 18px;"><span style="font-size: 24px;font-weight: bold;">Empresas relacionadas</span><br><br>
+            <div id="divFloat">
+              <ul style="list-style: square;" id="listaPags">
+                <li><span onclick="window.open('https://www.voopoo.com/','_blank');" style="cursor: pointer;font-weight: bold; font-size: 18px;">Voopoo</a></li>
+                <li><span onclick="window.open('https://www.vaporesso.com/','_blank');" style="cursor: pointer;font-weight: bold; font-size: 18px;">Vaporesso</a></li>
+                <li><span onclick="window.open('https://www.smoktech.com/','_blank');" style="cursor: pointer;font-weight: bold; font-size: 18px;">SMOK</a></li>
+                <li><span onclick="window.open('https://cloudnurdz.com/','_blank');" style="cursor: pointer;font-weight: bold; font-size: 18px;">Cloud Nurdz</a></li>
+                <li><span onclick="window.open('https://monstervapelabs.com/','_blank');" style="cursor: pointer;font-weight: bold; font-size: 18px;">Monster Vape Labs</a></li>
+                <li><span onclick="window.open('https://www.skwezed.com/','_blank');" style="cursor: pointer;font-weight: bold; font-size: 18px;">Skwezed</a></li>
+                <li><span onclick="window.open('https://www.facebook.com/Chelios-Coils-103721261779601','_blank');" style="cursor: pointer;font-weight: bold; font-size: 18px;">Chelio`s Coils</a></li>
+              </ul>
+            </div>
+          </p>
+        </div>
+        <div>
+          <span style="font-size: 24px;font-weight: bold;">Redes Sociales</span><br><br><br>
+          <div id="divFloat">
+            <ul style="list-style:circle;">
+              <li><ion-icon name="logo-facebook"></ion-icon>&nbsp;<span onclick="window.open('https://www.facebook.com/vapeitbo','_blank');" style="cursor: pointer;font-weight: bold; font-size: 18px;">Facebook</span><br></li>
+              <li><ion-icon name="logo-instagram"></ion-icon>&nbsp;<span onclick="window.open('https://www.instagram.com/vapeitbo/','_blank');" style="cursor: pointer;font-weight: bold; font-size: 18px;">Instagram</span><br></li>
+              <li><ion-icon name="logo-whatsapp"></ion-icon>&nbsp;<span onclick="window.open('https://api.whatsapp.com/send?phone=59176533222','_blank');" style="cursor: pointer;font-weight: bold; font-size: 18px;">Whatsapp</span><br></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+  </footer>
+</body>
+</html>

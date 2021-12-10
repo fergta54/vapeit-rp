@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Vape It</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='mihojadeestilos.css'>
+    <link href="https://fonts.googleapis.com/css2?family=Blinker&family=Raleway&family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="Chart.bundle.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCKiIqCdZGrVxx06LSbe7uG3zXOq1Cz5k&callback=initMap" async defer></script>
+    <script src="emojis.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+      header{
+        width: 300px;
+        color: black;
+        background-color:#c400c4;
+        margin-top: 10px;
+        border-radius: 50px;
+        border: solid black;
+      }
+    </style>
+</head>
+<body id="body">
+  <div class="d-flex flex-row justify-content-evenly" style="background: #1b1a1a;font-size: 24px;">
+    <div>
+      <nav class="container-fluid nav p-4 justify-content-start">
+      <a href="index.html" class="nav-link" style="font-weight: bold; color:#a001a0">Inicio</a>
+      <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" style="font-weight: bold; color: #a001a0;">Productos</a>
+      <ul class="dropdown-menu">
+        <li><a href="eliquids.html" class="dropdown-item" style="color:#a001a0">E-Liquids</a></li>
+        <li><a href="equipos.html" class="dropdown-item" style="color:#a001a0">Equipos</a></li>
+        <li><a href="atomizadores.html" class="dropdown-item" style="color:#a001a0">Atomizadores</a></li>
+        <li><a href="accesorios.html" class="dropdown-item" style="color:#a001a0">Accesorios</a></li>
+      </ul>
+    </li>
+      <a href="informacion.html" class="nav-link" style="font-weight: bold;color: #a001a0;">Información</a>
+      <a href="estadisticas.html" class="nav-link" style="font-weight: bold;color: #a001a0;">Estadísticas</a>
+      <a href="galeria.html" class="nav-link" style="font-weight: bold;color: #a001a0;">Galería</a>
+      <a href="http://localhost:3000/index.html" class="nav-link" style="font-weight: bold;color: #a001a0;">Sugerencias</a>
+    </nav>
+    </div>
+    <div style="margin-top: 15px;margin-bottom: 15px;">
+      <script src="https://code.responsivevoice.org/responsivevoice.js?key=zJs5qYFU"></script>
+      <span id="hablartit" style="font-size: 48px;font-weight: bold; color:#a001a0;text-shadow: #000000 3px 3px 5px;" class="animate__animated animate__slideInLeft">Vape it</span>
+      &nbsp;<img width="75" height="75" src="imagenes/logovapeti.png" class="imglogo">
+    </div>
+    <div id="iconsenlace">
+      <a href="carrito.html"><ion-icon name="cart-outline" style="color: #a001a0;"></ion-icon></a>&nbsp;<a href="registro.html"><ion-icon name="person-add-outline" style="color: #a001a0;"></ion-icon></a>&nbsp;<a href="iniciosesion.html"><ion-icon name="person-outline" style="color: #a001a0;"></ion-icon></a>
+    </div>
+    <button id="btninfo"><a href="index.html"><center><ion-icon name="home-outline" style="color:#a001a0;"></ion-icon></center></a></button>
+  </div>
+    <center><header style="font-size: 46px;"><center><b><u>Estadísticas</u></b></center></header></center>
+    <center><div id="canvas-container" style="width: 50%;">
+        <center><span id="titEstadistica"><b><u>¿Te gusta la página?</u></b></span></center>
+        <center><span id="titEstadistica" style="font-size: 36px"><b>Me gusta / No me gusta</b></span></center>
+        <center>
+            <div style="width: 500px; margin-bottom: 10px;">
+                <button id="btnlike"><canvas id="canvasemojifeliz" width="75" height="75"></canvas></button>
+                <button id="btndislike"><canvas id="canvasemojienojado" width="75" height="75"></canvas></button>
+            </div>
+        </center>
+        <canvas id="chart" width="500" height="350"></canvas>
+    </div></center>
+    <script>
+        let like = document.querySelector('#btnlike');
+        let dislike = document.querySelector('#btndislike');
+        var likes = 0;
+        var dislikes = 0;
+        like.addEventListener('click',()=>{
+            likes += 1;
+            addData(myChart, [likes, dislikes]);
+        })
+        dislike.addEventListener('click',()=>{
+            dislikes += 1;
+            addData(myChart, [likes, dislikes]);
+        })
+
+		var ctx = document.getElementById('chart').getContext('2d');
+    var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Cantidad de "Me gusta"','Cantidad de "No me gusta"'],
+        datasets: [{
+            label: 'Me gusta vs No me gusta',
+            data: [likes, dislikes],
+            backgroundColor: [
+                '#4D6DD2',
+                '#CB5A5A'
+            ],
+            borderColor: [
+                'black',
+                'black'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+      scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+    });
+    function addData(chart, data) {
+      chart.data.datasets[0].data = data;
+      chart.update();
+    }
+    </script>
+    <center><div id="canvas-container" style="width: 75%;">
+        <center><span id="titEstadistica"><b><u>Cantidad de tiendas de cigarrillo electrónico en España</u></b></span></center>
+        <canvas id="chart2" width="500" height="350"></canvas>
+    </div></center>
+    <script>
+		var ctx = document.getElementById('chart2').getContext('2d');
+    var myChart2 = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['2013','2014','2015','2016','2017'],
+        datasets: [{
+            label: '# de tiendas',
+            data: [3000,950,150,350,400],
+            backgroundColor: [
+                '#4D6DD2',
+                '#CB5A5A',
+                '#56CF51',
+                '#A751CF',
+                '#EDB82A'
+            ],
+            borderColor: [
+                'black',
+                'black',
+                'black',
+                'black',
+                'black'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+    });
+    </script>
+    <center><div id="canvas-container" style="width: 75%;">
+        <center><span id="titEstadistica"><b><u>Cantidad de vapeadores en España</u></b></span></center>
+        <canvas id="chart3" width="500" height="350"></canvas>
+    </div></center>
+    <script>
+		var ctx = document.getElementById('chart3').getContext('2d');
+    var myChart3 = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['2013','2014','2015','2016','2017'],
+        datasets: [{
+            label: '# de vapeadores (en miles)',
+            data: [950,300,220,350,450],
+            backgroundColor: [
+                '#4D6DD2',
+                '#CB5A5A',
+                '#56CF51',
+                '#A751CF',
+                '#EDB82A'
+            ],
+            borderColor: [
+                'black',
+                'black',
+                'black',
+                'black',
+                'black'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+    });
+    </script>
+    <center><div id="canvas-container" style="width: 75%;">
+        <center><span id="titEstadistica"><b><u>¿He dejado o disminuido el consumo de tabaco? (En España)</u></b></span></center>
+        <canvas id="chart4" width="500" height="350"></canvas>
+    </div></center>
+    <script>
+		var ctx = document.getElementById('chart4').getContext('2d');
+    var myChart4 = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: ['Ns / Nc','No he disminuido nada','Sí, fumo menos','Sí, fumo mucho menos','Sí, por completo'],
+        datasets: [{
+            label: '# de respuestas (En %)',
+            data: [1.5,2.26,11.2,15.3,69.8],
+            backgroundColor: [
+                '#4D6DD2',
+                '#CB5A5A',
+                '#56CF51',
+                '#A751CF',
+                '#EDB82A'
+            ],
+            borderColor: [
+                'black',
+                'black',
+                'black',
+                'black',
+                'black'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+    });
+    </script>
+    <center><div id="canvas-container" style="width: 75%; margin-bottom: 100px;">
+        <center><span id="titEstadistica"><b><u>Razones para iniciarse en el uso del cigarrillo electrónico</u></b></span></center>
+        <canvas id="chart5" width="500" height="350"></canvas>
+    </div></center>
+    <script>
+		var ctx = document.getElementById('chart5').getContext('2d');
+    var myChart5 = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Es una ayuda para dejar de fumar','Por probar, por curiosidad','Es una forma de fumar menos','Utilizarlo en espacios públicos','Porque es más limpio, no huele','Por ahorrar','Es más moderno','Otras','Ns / Nc'],
+        datasets: [{
+            label: '# de respuestas (En %)',
+            data: [68,10.5,9.5,2.3,1.8,0.8,0.3,6.3,0.3],
+            backgroundColor: [
+                '#4D6DD2',
+                '#CB5A5A',
+                '#56CF51',
+                '#A751CF',
+                '#EDB82A',
+                '#30E3E9',
+                '#E93079',
+                '#30E98A',
+                '#F2F20E'
+            ],
+            borderColor: [
+                'black',
+                'black',
+                'black',
+                'black',
+                'black',
+                'black',
+                'black',
+                'black',
+                'black'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+    });
+    </script>
+    <footer>
+      <div class="p-3 container-fluid d-flex justify-content-evenly" style="color: #a001a0;">
+        <div>
+          <p style="font-weight: bold; font-size: 18px;"><a href="desarrolladores.html" id="desabtn" style=" font-size: 24px;">Información</a><br><br>
+            <ul style="list-style: none; right: 30px; position: relative;font-size: 18px;">
+              <li style="color: #a001a0;font-weight: bold;"><address>Sucursal 1: Achumani Calle 11 #5</address></li>
+              <li style="font-weight: bold;">Horarios de atención: Lun-vie: 10am-9pm, Sábado: 12am-6pm</li>
+              <li style="color: #a001a0;font-weight: bold;">Teléfono: +591 76533222</li>
+            </ul>
+          </p>
+        </div>
+        <div>
+          <p style="font-weight: bold; font-size: 18px;"><span style="font-size: 24px;font-weight: bold;">Empresas relacionadas</span><br><br>
+            <div id="divFloat">
+              <ul style="list-style: square;" id="listaPags">
+                <li><span onclick="window.open('https://www.voopoo.com/','_blank');" style="cursor: pointer;font-weight: bold; font-size: 18px;">Voopoo</a></li>
+                <li><span onclick="window.open('https://www.vaporesso.com/','_blank');" style="cursor: pointer;font-weight: bold; font-size: 18px;">Vaporesso</a></li>
+                <li><span onclick="window.open('https://www.smoktech.com/','_blank');" style="cursor: pointer;font-weight: bold; font-size: 18px;">SMOK</a></li>
+                <li><span onclick="window.open('https://cloudnurdz.com/','_blank');" style="cursor: pointer;font-weight: bold; font-size: 18px;">Cloud Nurdz</a></li>
+                <li><span onclick="window.open('https://monstervapelabs.com/','_blank');" style="cursor: pointer;font-weight: bold; font-size: 18px;">Monster Vape Labs</a></li>
+                <li><span onclick="window.open('https://www.skwezed.com/','_blank');" style="cursor: pointer;font-weight: bold; font-size: 18px;">Skwezed</a></li>
+                <li><span onclick="window.open('https://www.facebook.com/Chelios-Coils-103721261779601','_blank');" style="cursor: pointer;font-weight: bold; font-size: 18px;">Chelio`s Coils</a></li>
+              </ul>
+            </div>
+          </p>
+        </div>
+        <div>
+          <span style="font-size: 24px;font-weight: bold;">Redes Sociales</span><br><br><br>
+          <div id="divFloat">
+            <ul style="list-style:circle;">
+              <li><ion-icon name="logo-facebook"></ion-icon>&nbsp;<span onclick="window.open('https://www.facebook.com/vapeitbo','_blank');" style="cursor: pointer;font-weight: bold; font-size: 18px;">Facebook</span><br></li>
+              <li><ion-icon name="logo-instagram"></ion-icon>&nbsp;<span onclick="window.open('https://www.instagram.com/vapeitbo/','_blank');" style="cursor: pointer;font-weight: bold; font-size: 18px;">Instagram</span><br></li>
+              <li><ion-icon name="logo-whatsapp"></ion-icon>&nbsp;<span onclick="window.open('https://api.whatsapp.com/send?phone=59176533222','_blank');" style="cursor: pointer;font-weight: bold; font-size: 18px;">Whatsapp</span><br></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+  </footer>
+</body>
+
+</html>
